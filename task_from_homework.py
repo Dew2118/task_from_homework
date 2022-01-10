@@ -11,8 +11,7 @@ import pandas as pd
 from __pycache__ import extra_byte
 
 
-class Zoom_link:
-    df = pd.DataFrame(columns = ['title','due','notes'])
+class Get_homeworks:
     def __init__(self):
         self.text_convert = Text_convert()
         if "GOOGLE_CHROME_BIN" in os.environ:
@@ -48,13 +47,16 @@ class Zoom_link:
         courses = self.driver.find_elements_by_xpath('//a[contains(@href,"/lms/homeworkbook")]')
         courses[1].click()
         sleep(3)
-        return self.get_all_homeworks()
 
     def get_all_homeworks(self):
+        return [(i,title.text) for i,title in enumerate(self.get_all_homework_titles())]
+
+    def get_homeworks(self, index_list):
+        df = pd.DataFrame(columns = ['title','due','notes'])
         links = self.get_link_to_click()
         print(links)
-        for i,link in enumerate(links):
-            link.click()
+        for real_i,i in enumerate(index_list):
+            links[i].click()
             sleep(5)
             p = self.driver.current_window_handle
             #get first child window
@@ -66,13 +68,16 @@ class Zoom_link:
             notes = self.driver.find_elements_by_tag_name("div")[48].text
             due = self.driver.find_elements_by_tag_name("div")[44].text
             title = self.driver.find_element_by_tag_name("h2").text
-            self.df.loc[i] = [title, self.text_convert.convert_to_dt(self.text_convert.convert_to_date(due)), notes]
+            df.loc[real_i] = [title, self.text_convert.convert_to_dt(self.text_convert.convert_to_date(due)), notes]
             self.driver.close()
             self.driver.switch_to.window(p)
             sleep(1)
-            
+        print(df)
         self.driver.quit()
-        return self.df
+        return df
+
+    def get_all_homework_titles(self):
+        return self.driver.find_elements_by_class_name('py-3')[3:][0::6]
 
     def get_link_to_click(self):
         return self.driver.find_elements_by_tag_name('a')[23:]
