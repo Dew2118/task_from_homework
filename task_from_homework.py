@@ -68,7 +68,7 @@ class Get_homeworks:
             notes = self.driver.find_elements_by_tag_name("div")[48].text
             due = self.driver.find_elements_by_tag_name("div")[44].text
             title = self.driver.find_element_by_tag_name("h2").text
-            df.loc[real_i] = [title, self.text_convert.convert_to_dt(self.text_convert.convert_to_date(due)), notes]
+            df.loc[real_i] = [title, self.text_convert.convert_to_date(due), notes]
             self.driver.close()
             self.driver.switch_to.window(p)
             sleep(1)
