@@ -33,11 +33,6 @@ class Text_convert:
         year = int(text[-11:-9])+2500-543
         hour = int(text[-8:-6])
         minute = int(text[-5:-3])
-        return year, month, day, hour, minute
+        return convert_to_RFC_datetime(year, month, day, hour, minute)
 
-    def convert_to_dt(self,tuple):
-        return convert_to_RFC_datetime(tuple[0],tuple[1],tuple[2],tuple[3],tuple[4])
-
-# t = 'กำหนดส่ง 43 ม.ค. 65 16:00 น.'
-# print(t[-11:-9])
 tc = Text_convert()
