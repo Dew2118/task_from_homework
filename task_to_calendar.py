@@ -34,3 +34,16 @@ class Task:
             tasklist = extra_byte.tasklists,
             body = request_body
         ).execute()
+
+    def complete_task(self,id):
+        print('task_id',id)
+        status='completed'
+        request_body = {
+            'id':id,
+            'status':status
+        }
+        response = self.service.tasks().update(
+            task=id,
+            tasklist = extra_byte.tasklists,
+            body = request_body
+        ).execute()

@@ -49,12 +49,12 @@ class Get_homeworks:
         sleep(3)
 
     def get_all_homeworks(self):
-        return [(i,title.text) for i,title in enumerate(self.get_all_homework_titles())]
+        title_list = self.get_all_homework_titles()
+        return [(i,title.text+'[automated]') for i,title in enumerate(title_list)], [title.text+'[automated]' for title in title_list]
 
     def get_homeworks(self, index_list):
         df = pd.DataFrame(columns = ['title','due','notes'])
         links = self.get_link_to_click()
-        print(links)
         for real_i,i in enumerate(index_list):
             links[i].click()
             sleep(5)
@@ -67,7 +67,7 @@ class Get_homeworks:
                     self.driver.switch_to.window(w)
             notes = self.driver.find_elements_by_tag_name("div")[48].text
             due = self.driver.find_elements_by_tag_name("div")[44].text
-            title = self.driver.find_element_by_tag_name("h2").text
+            title = self.driver.find_element_by_tag_name("h2").text+'[automated]'
             df.loc[real_i] = [title, self.text_convert.convert_to_date(due), notes]
             self.driver.close()
             self.driver.switch_to.window(p)
