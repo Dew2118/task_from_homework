@@ -72,7 +72,6 @@ class Get_homeworks:
             self.driver.close()
             self.driver.switch_to.window(p)
             sleep(1)
-        print(df)
         self.driver.quit()
         return df
 

@@ -35,10 +35,14 @@ class Task:
             body = request_body
         ).execute()
 
-    def complete_task(self,id):
-        print('task_id',id)
+    def complete_task(self, title, due, notes, id):
         status='completed'
+        deleted = 'False'
         request_body = {
+            'title':title,
+            'notes':notes,
+            'due':due,
+            'deleted':deleted,
             'id':id,
             'status':status
         }
